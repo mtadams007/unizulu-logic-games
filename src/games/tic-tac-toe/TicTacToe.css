@@ -1,0 +1,52 @@
+.ttt-setup,
+.ttt-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+
+.ttt-computer-setup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6em;
+}
+
+.ttt-difficulty {
+  display: flex;
+  gap: 1em;
+  text-transform: capitalize;
+}
+
+.ttt-status {
+  font-size: 1.2em;
+  font-weight: 500;
+  min-height: 1.5em;
+}
+
+.ttt-board {
+  display: grid;
+  grid-template-columns: repeat(3, 5em);
+  grid-template-rows: repeat(3, 5em);
+  gap: 0.4em;
+}
+
+.ttt-cell {
+  font-size: 2em;
+  font-weight: 700;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ttt-cell-win {
+  background-color: #8fd19e;
+  border-color: #4caf50;
+}
+
+.ttt-controls {
+  display: flex;
+  gap: 1em;
+}
