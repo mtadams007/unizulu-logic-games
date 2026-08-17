@@ -161,7 +161,8 @@ export function OrderAndChaos() {
             key={i}
             className={`oac-cell ${result?.line?.includes(i) ? "oac-cell-win" : ""} ${highlightedCell === i ? "oac-cell-highlight" : ""}`}
             style={{
-              color: cell === "X" ? "#e74c3c" : cell === "O" ? "#3498db" : "inherit",
+              color:
+                cell === "X" ? "#e74c3c" : cell === "O" ? "#3498db" : "inherit",
             }}
             onClick={() => placeAt(i)}
           >
