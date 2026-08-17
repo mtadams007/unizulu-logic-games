@@ -1,0 +1,70 @@
+.oac-setup,
+.oac-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+
+.oac-blurb {
+  max-width: 28em;
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
+.oac-computer-setup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.oac-computer-note {
+  margin: 0;
+  font-size: 0.85em;
+  opacity: 0.7;
+}
+
+.oac-difficulty {
+  display: flex;
+  gap: 1em;
+  text-transform: capitalize;
+}
+
+.oac-status {
+  font-size: 1.2em;
+  font-weight: 500;
+  min-height: 1.5em;
+}
+
+.oac-mark-picker {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+}
+
+.oac-board {
+  display: grid;
+  grid-template-columns: repeat(6, 3em);
+  grid-template-rows: repeat(6, 3em);
+  gap: 0.3em;
+}
+
+.oac-cell {
+  font-size: 1.3em;
+  font-weight: 700;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.oac-cell-win {
+  background-color: #8fd19e;
+  border-color: #4caf50;
+}
+
+.oac-controls {
+  display: flex;
+  gap: 1em;
+}
