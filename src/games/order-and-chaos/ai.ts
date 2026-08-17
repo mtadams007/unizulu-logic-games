@@ -156,3 +156,106 @@ export function getChaosMove(board: Board, difficulty: Difficulty): Move {
 
   return bestChaosMove(board);
 }
+
+// Order AI: tries to build 5-in-a-row (aggressive/building strategy)
+
+// Scores a move for Order based on how many lines it helps build
+// Higher score = better move for Order
+function boardOrderScore(board: Board): number {
+  let score = 0;
+  for (const line of WIN_LINES) {
+    const info = readLine(board, line);
+    if (info) {
+      // Reward building lines of our mark; penalize opponent's lines slightly less
+      score += info.filled * info.filled;
+    }
+  }
+  return score;
+}
+
+// Check for Order's winning move (3+ marks that can extend to 5)
+function findOrderOpportunity(board: Board): Move | null {
+  for (const line of WIN_LINES) {
+    const info = readLine(board, line);
+    // Look for 4 of the same mark with 1 empty — Order can win next turn
+    if (info && info.filled === 4 && info.empty === 1) {
+      const index = line.find((i) => board[i] === null)!;
+      return { index, mark: info.mark };
+    }
+  }
+  return null;
+}
+
+function mediumOrderMove(board: Board): Move {
+  const empty = getEmptyCells(board);
+  const buildMoves: Move[] = [];
+
+  // Prefer moves that build our own lines (3+ in a row on any line)
+  for (const index of empty) {
+    for (const mark of ["X", "O"] as Mark[]) {
+      const next = [...board];
+      next[index] = mark;
+
+      // Count how many lines we're building with this mark
+      let buildCount = 0;
+      for (const line of WIN_LINES) {
+        const info = readLine(next, line);
+        if (info && info.mark === mark && info.filled >= 3) {
+          buildCount++;
+        }
+      }
+
+      if (buildCount > 0) {
+        // Add multiple times based on build count for weighted randomness
+        for (let i = 0; i < buildCount; i++) {
+          buildMoves.push({ index, mark });
+        }
+      }
+    }
+  }
+
+  // If we found good building moves, use them; otherwise random
+  if (buildMoves.length > 0) {
+    return buildMoves[Math.floor(Math.random() * buildMoves.length)];
+  }
+
+  return randomMove(board);
+}
+
+function bestOrderMove(board: Board): Move {
+  const empty = getEmptyCells(board);
+  let bestScore = -Infinity;
+  let bestMoves: Move[] = [];
+
+  for (const index of empty) {
+    for (const mark of ["X", "O"] as Mark[]) {
+      const next = [...board];
+      next[index] = mark;
+      const score = boardOrderScore(next);
+      if (score > bestScore) {
+        bestScore = score;
+        bestMoves = [{ index, mark }];
+      } else if (score === bestScore) {
+        bestMoves.push({ index, mark });
+      }
+    }
+  }
+
+  return bestMoves[Math.floor(Math.random() * bestMoves.length)];
+}
+
+export function getOrderMove(board: Board, difficulty: Difficulty): Move {
+  // Check for immediate winning opportunity
+  const opportunity = findOrderOpportunity(board);
+  if (opportunity) return opportunity;
+
+  if (difficulty === "easy") {
+    return randomMove(board);
+  }
+
+  if (difficulty === "medium") {
+    return mediumOrderMove(board);
+  }
+
+  return bestOrderMove(board);
+}

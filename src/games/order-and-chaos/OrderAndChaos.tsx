@@ -1,29 +1,30 @@
 import { useEffect, useState } from "react";
 import { Board, Mark, calculateResult, emptyBoard } from "./logic";
-import { Difficulty, getChaosMove } from "./ai";
+import { Difficulty, getChaosMove, getOrderMove } from "./ai";
 import "./OrderAndChaos.css";
 
 type Mode = "friend" | "computer";
 type Role = "order" | "chaos";
 
-const COMPUTER_ROLE: Role = "chaos";
 const AI_MOVE_DELAY_MS = 400;
 
 export function OrderAndChaos() {
   const [mode, setMode] = useState<Mode | null>(null);
   const [difficulty, setDifficulty] = useState<Difficulty>("medium");
+  const [humanRole, setHumanRole] = useState<Role>("order");
   const [board, setBoard] = useState<Board>(emptyBoard());
-  const [role, setRole] = useState<Role>("order");
+  const [currentRole, setCurrentRole] = useState<Role>("order");
   const [selectedMark, setSelectedMark] = useState<Mark>("X");
 
   const result = calculateResult(board);
   const gameOver = result !== null;
-  const isHumanTurn = mode === "friend" || role !== COMPUTER_ROLE;
+  const isHumanTurn = mode === "friend" || currentRole === humanRole;
 
-  function startGame(nextMode: Mode) {
+  function startGame(nextMode: Mode, role?: Role) {
     setMode(nextMode);
     setBoard(emptyBoard());
-    setRole("order");
+    setCurrentRole("order");
+    setHumanRole(role || "order");
     setSelectedMark("X");
   }
 
@@ -33,26 +34,31 @@ export function OrderAndChaos() {
     const next = [...board];
     next[index] = selectedMark;
     setBoard(next);
-    setRole(role === "order" ? "chaos" : "order");
+    setCurrentRole(currentRole === "order" ? "chaos" : "order");
   }
 
   useEffect(() => {
-    if (mode !== "computer" || gameOver || role !== COMPUTER_ROLE) return;
+    if (mode !== "computer" || gameOver || currentRole === humanRole) return;
 
     const timer = window.setTimeout(() => {
-      const move = getChaosMove(board, difficulty);
+      const computerRole = humanRole === "order" ? "chaos" : "order";
+      const move =
+        computerRole === "chaos"
+          ? getChaosMove(board, difficulty)
+          : getOrderMove(board, difficulty);
+
       const next = [...board];
       next[move.index] = move.mark;
       setBoard(next);
-      setRole("order");
+      setCurrentRole(currentRole === "order" ? "chaos" : "order");
     }, AI_MOVE_DELAY_MS);
 
     return () => window.clearTimeout(timer);
-  }, [board, role, mode, gameOver, difficulty]);
+  }, [board, currentRole, mode, gameOver, difficulty, humanRole]);
 
   function reset() {
     setBoard(emptyBoard());
-    setRole("order");
+    setCurrentRole("order");
     setSelectedMark("X");
   }
 
@@ -61,17 +67,34 @@ export function OrderAndChaos() {
       <div className="oac-setup">
         <h2>Order and Chaos</h2>
         <p className="oac-blurb">
-          Order wants five matching marks in a row, anywhere on the board.
-          Chaos wins by filling the board without that happening. Every
-          turn, either player may place an X or an O in any empty square —
-          the marks aren't tied to a side.
+          Order wants five matching marks in a row, anywhere on the board. Chaos
+          wins by filling the board without that happening. Every turn, either
+          player may place an X or an O in any empty square — the marks aren't
+          tied to a side.
         </p>
         <button onClick={() => startGame("friend")}>Play a Friend</button>
         <div className="oac-computer-setup">
-          <button onClick={() => startGame("computer")}>
-            Play the Computer
+          <div className="oac-role-picker">
+            <p>Play the Computer as:</p>
+            {(["order", "chaos"] as Role[]).map((role) => (
+              <label key={role}>
+                <input
+                  type="radio"
+                  name="playerRole"
+                  value={role}
+                  checked={humanRole === role}
+                  onChange={() => setHumanRole(role)}
+                />
+                {role.charAt(0).toUpperCase() + role.slice(1)}
+              </label>
+            ))}
+          </div>
+          <button onClick={() => startGame("computer", humanRole)}>
+            Start Game
           </button>
-          <p className="oac-computer-note">You play Order, going first.</p>
+          <p className="oac-computer-note">
+            {humanRole === "order" ? "You go first." : "Computer goes first."}
+          </p>
           <div className="oac-difficulty">
             {(["easy", "medium", "hard"] as Difficulty[]).map((level) => (
               <label key={level}>
@@ -99,7 +122,7 @@ export function OrderAndChaos() {
           ? result.winner === "order"
             ? "Order wins!"
             : "Chaos wins!"
-          : `${role === "order" ? "Order" : "Chaos"}'s turn`}
+          : `${currentRole === "order" ? "Order" : "Chaos"}'s turn`}
       </p>
       {isHumanTurn && !gameOver && (
         <div className="oac-mark-picker">
