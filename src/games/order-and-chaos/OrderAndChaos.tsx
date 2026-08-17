@@ -124,23 +124,28 @@ export function OrderAndChaos() {
             : "Chaos wins!"
           : `${currentRole === "order" ? "Order" : "Chaos"}'s turn`}
       </p>
-      {isHumanTurn && !gameOver && (
-        <div className="oac-mark-picker">
-          <span>Place:</span>
-          {(["X", "O"] as Mark[]).map((mark) => (
-            <label key={mark}>
-              <input
-                type="radio"
-                name="mark"
-                value={mark}
-                checked={selectedMark === mark}
-                onChange={() => setSelectedMark(mark)}
-              />
-              {mark}
-            </label>
-          ))}
-        </div>
-      )}
+      <div
+        className="oac-mark-picker"
+        style={{
+          opacity: isHumanTurn && !gameOver ? 1 : 0.3,
+          pointerEvents: isHumanTurn && !gameOver ? "auto" : "none",
+        }}
+      >
+        <span>Place:</span>
+        {(["X", "O"] as Mark[]).map((mark) => (
+          <label key={mark}>
+            <input
+              type="radio"
+              name="mark"
+              value={mark}
+              checked={selectedMark === mark}
+              onChange={() => setSelectedMark(mark)}
+              disabled={!isHumanTurn || gameOver}
+            />
+            {mark}
+          </label>
+        ))}
+      </div>
       <div className="oac-board">
         {board.map((cell, i) => (
           <button
