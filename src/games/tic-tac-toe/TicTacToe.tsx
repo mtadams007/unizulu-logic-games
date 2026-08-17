@@ -103,6 +103,10 @@ export function TicTacToe() {
           <button
             key={i}
             className={`ttt-cell ${result?.line.includes(i) ? "ttt-cell-win" : ""}`}
+            style={{
+              color:
+                cell === "X" ? "#e74c3c" : cell === "O" ? "#3498db" : "inherit",
+            }}
             onClick={() => playAt(i)}
           >
             {cell}
