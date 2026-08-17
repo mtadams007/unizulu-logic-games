@@ -64,6 +64,22 @@
   border-color: #4caf50;
 }
 
+.oac-cell-highlight {
+  background-color: #ffd700;
+  animation: pulse-highlight 1s ease-out;
+}
+
+@keyframes pulse-highlight {
+  0% {
+    background-color: #ffed4e;
+    box-shadow: 0 0 0.5em #ffd700;
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
+
 .oac-controls {
   display: flex;
   gap: 1em;

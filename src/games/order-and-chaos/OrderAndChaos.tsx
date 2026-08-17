@@ -6,7 +6,8 @@ import "./OrderAndChaos.css";
 type Mode = "friend" | "computer";
 type Role = "order" | "chaos";
 
-const AI_MOVE_DELAY_MS = 400;
+const AI_MOVE_DELAY_MS = 600;
+const HIGHLIGHT_DURATION_MS = 1000;
 
 export function OrderAndChaos() {
   const [mode, setMode] = useState<Mode | null>(null);
@@ -15,6 +16,7 @@ export function OrderAndChaos() {
   const [board, setBoard] = useState<Board>(emptyBoard());
   const [currentRole, setCurrentRole] = useState<Role>("order");
   const [selectedMark, setSelectedMark] = useState<Mark>("X");
+  const [highlightedCell, setHighlightedCell] = useState<number | null>(null);
 
   const result = calculateResult(board);
   const gameOver = result !== null;
@@ -50,7 +52,14 @@ export function OrderAndChaos() {
       const next = [...board];
       next[move.index] = move.mark;
       setBoard(next);
+      setHighlightedCell(move.index);
       setCurrentRole(currentRole === "order" ? "chaos" : "order");
+
+      const highlightTimer = window.setTimeout(() => {
+        setHighlightedCell(null);
+      }, HIGHLIGHT_DURATION_MS);
+
+      return () => window.clearTimeout(highlightTimer);
     }, AI_MOVE_DELAY_MS);
 
     return () => window.clearTimeout(timer);
@@ -150,7 +159,7 @@ export function OrderAndChaos() {
         {board.map((cell, i) => (
           <button
             key={i}
-            className={`oac-cell ${result?.line?.includes(i) ? "oac-cell-win" : ""}`}
+            className={`oac-cell ${result?.line?.includes(i) ? "oac-cell-win" : ""} ${highlightedCell === i ? "oac-cell-highlight" : ""}`}
             onClick={() => placeAt(i)}
           >
             {cell}
