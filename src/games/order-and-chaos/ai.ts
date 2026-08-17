@@ -143,12 +143,12 @@ function bestChaosMove(board: Board): Move {
 }
 
 export function getChaosMove(board: Board, difficulty: Difficulty): Move {
+  const urgent = findUrgentBlock(board);
+  if (urgent) return urgent;
+
   if (difficulty === "easy") {
     return randomMove(board);
   }
-
-  const urgent = findUrgentBlock(board);
-  if (urgent) return urgent;
 
   if (difficulty === "medium") {
     return mediumChaosMove(board);
