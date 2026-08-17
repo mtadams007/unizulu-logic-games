@@ -66,6 +66,60 @@ function boardDangerScore(board: Board): number {
   return score;
 }
 
+// Medium difficulty: prioritizes blocking high-risk lines (3+ matching marks)
+// over random moves, but doesn't do full exhaustive search like hard mode.
+function mediumChaosMove(board: Board): Move {
+  const empty = getEmptyCells(board);
+  const riskMoves: Move[] = [];
+
+  // First, identify all moves that block or reduce dangerous lines
+  for (const index of empty) {
+    for (const mark of ["X", "O"] as Mark[]) {
+      const next = [...board];
+      next[index] = mark;
+
+      // Check if this move improves the board (reduces danger)
+      let isRisky = false;
+      for (const line of WIN_LINES) {
+        const info = readLine(next, line);
+        if (info && info.filled >= 3) {
+          isRisky = true;
+          break;
+        }
+      }
+
+      if (!isRisky) {
+        riskMoves.push({ index, mark });
+      }
+    }
+  }
+
+  // If we found moves that avoid creating 3+ mark lines, prefer those
+  if (riskMoves.length > 0) {
+    return riskMoves[Math.floor(Math.random() * riskMoves.length)];
+  }
+
+  // Otherwise, pick the move that minimizes board danger
+  let bestScore = Infinity;
+  let bestMoves: Move[] = [];
+
+  for (const index of empty) {
+    for (const mark of ["X", "O"] as Mark[]) {
+      const next = [...board];
+      next[index] = mark;
+      const score = boardDangerScore(next);
+      if (score < bestScore) {
+        bestScore = score;
+        bestMoves = [{ index, mark }];
+      } else if (score === bestScore) {
+        bestMoves.push({ index, mark });
+      }
+    }
+  }
+
+  return bestMoves[Math.floor(Math.random() * bestMoves.length)];
+}
+
 function bestChaosMove(board: Board): Move {
   const empty = getEmptyCells(board);
   let bestScore = Infinity;
@@ -97,7 +151,7 @@ export function getChaosMove(board: Board, difficulty: Difficulty): Move {
   if (urgent) return urgent;
 
   if (difficulty === "medium") {
-    return randomMove(board);
+    return mediumChaosMove(board);
   }
 
   return bestChaosMove(board);
