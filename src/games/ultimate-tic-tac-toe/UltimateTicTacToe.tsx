@@ -51,7 +51,12 @@ export function UltimateTicTacToe() {
       const move = getAiMove(gameState, AI_PLAYER, difficulty);
       if (move === null) return;
 
-      const result = makeMove(gameState, move.boardIndex, move.cellIndex, AI_PLAYER);
+      const result = makeMove(
+        gameState,
+        move.boardIndex,
+        move.cellIndex,
+        AI_PLAYER,
+      );
       if (result === null) return;
 
       setGameState(result);
@@ -134,7 +139,9 @@ export function UltimateTicTacToe() {
             }`}
           >
             {gameState.metaBoard[boardIndex] ? (
-              <div className="board-winner">{gameState.metaBoard[boardIndex]}</div>
+              <div className="board-winner">
+                {gameState.metaBoard[boardIndex]}
+              </div>
             ) : (
               <SmallBoard
                 board={board}
