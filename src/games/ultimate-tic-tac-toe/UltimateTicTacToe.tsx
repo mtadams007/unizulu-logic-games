@@ -139,7 +139,11 @@ export function UltimateTicTacToe() {
             }`}
           >
             {gameState.metaBoard[boardIndex] ? (
-              <div className="board-winner">
+              <div
+                className={`board-winner ${
+                  gameState.metaBoard[boardIndex] === "X" ? "mark-x" : "mark-o"
+                }`}
+              >
                 {gameState.metaBoard[boardIndex]}
               </div>
             ) : (
@@ -181,7 +185,9 @@ function SmallBoard({
       {board.map((cell, cellIndex) => (
         <button
           key={cellIndex}
-          className={`uttt-cell ${cell ? "filled" : ""}`}
+          className={`uttt-cell ${cell ? "filled" : ""} ${
+            cell === "X" ? "mark-x" : cell === "O" ? "mark-o" : ""
+          }`}
           onClick={() => onPlay(boardIndex, cellIndex)}
           disabled={cell !== null || !isActive || gameOver}
         >

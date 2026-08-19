@@ -4,6 +4,9 @@
   line-height: 24px;
   font-weight: 400;
 
+  --mark-x-color: #e74c3c;
+  --mark-o-color: #3498db;
+
   color: #0f0f0f;
   background-color: #f6f6f6;
 
@@ -12,6 +15,14 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+.mark-x {
+  color: var(--mark-x-color);
+}
+
+.mark-o {
+  color: var(--mark-o-color);
 }
 
 .container {

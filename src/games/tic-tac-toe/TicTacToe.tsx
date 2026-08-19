@@ -102,11 +102,9 @@ export function TicTacToe() {
         {board.map((cell, i) => (
           <button
             key={i}
-            className={`ttt-cell ${result?.line.includes(i) ? "ttt-cell-win" : ""}`}
-            style={{
-              color:
-                cell === "X" ? "#e74c3c" : cell === "O" ? "#3498db" : "inherit",
-            }}
+            className={`ttt-cell ${result?.line.includes(i) ? "ttt-cell-win" : ""} ${
+              cell === "X" ? "mark-x" : cell === "O" ? "mark-o" : ""
+            }`}
             onClick={() => playAt(i)}
           >
             {cell}

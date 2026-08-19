@@ -159,11 +159,9 @@ export function OrderAndChaos() {
         {board.map((cell, i) => (
           <button
             key={i}
-            className={`oac-cell ${result?.line?.includes(i) ? "oac-cell-win" : ""} ${highlightedCell === i ? "oac-cell-highlight" : ""}`}
-            style={{
-              color:
-                cell === "X" ? "#e74c3c" : cell === "O" ? "#3498db" : "inherit",
-            }}
+            className={`oac-cell ${result?.line?.includes(i) ? "oac-cell-win" : ""} ${highlightedCell === i ? "oac-cell-highlight" : ""} ${
+              cell === "X" ? "mark-x" : cell === "O" ? "mark-o" : ""
+            }`}
             onClick={() => placeAt(i)}
           >
             {cell}
