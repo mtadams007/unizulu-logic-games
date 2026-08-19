@@ -1,0 +1,138 @@
+.Mlabalaba-setup,
+.Mlabalaba-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+
+.Mlabalaba-blurb,
+.Mlabalaba-note {
+  max-width: 30em;
+  margin: 0;
+  text-align: center;
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
+.Mlabalaba-computer-setup,
+.Mlabalaba-difficulty,
+.Mlabalaba-controls,
+.Mlabalaba-scoreboard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+.Mlabalaba-computer-setup {
+  flex-direction: column;
+  gap: 0.6em;
+}
+
+.Mlabalaba-difficulty {
+  text-transform: capitalize;
+}
+
+.Mlabalaba-header {
+  min-height: 5em;
+  text-align: center;
+}
+
+.Mlabalaba-header h2,
+.Mlabalaba-status,
+.Mlabalaba-thinking {
+  margin: 0;
+}
+
+.Mlabalaba-status {
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.Mlabalaba-thinking {
+  font-size: 0.85em;
+  opacity: 0.7;
+}
+
+.Mlabalaba-scoreboard {
+  width: min(34em, 90vw);
+  justify-content: space-between;
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+.Mlabalaba-player {
+  white-space: nowrap;
+}
+
+.Mlabalaba-board {
+  position: relative;
+  width: min(34em, 82vw);
+  aspect-ratio: 1;
+  background: #f1eadc;
+  border: 0.5em solid #6a4b35;
+  box-shadow: 0 0.35em 0.8em rgba(42, 29, 20, 0.25);
+}
+
+.Mlabalaba-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.Mlabalaba-lines line {
+  stroke: #6a4b35;
+  stroke-width: 1.1;
+  stroke-linecap: round;
+}
+
+.Mlabalaba-point {
+  position: absolute;
+  z-index: 1;
+  width: 2.4em;
+  height: 2.4em;
+  transform: translate(-50%, -50%);
+  padding: 0;
+  border: 0.18em solid #6a4b35;
+  border-radius: 50%;
+  background: #fffaf0;
+  color: #403126;
+  font-size: clamp(0.85rem, 2.5vw, 1.2rem);
+  font-weight: 800;
+  line-height: 1;
+  box-shadow: 0 0.12em 0.2em rgba(42, 29, 20, 0.22);
+}
+
+.Mlabalaba-point.mark-x {
+  color: var(--mark-x-color);
+}
+
+.Mlabalaba-point.mark-o {
+  color: var(--mark-o-color);
+}
+
+.Mlabalaba-point.target {
+  outline: 0.22em solid #d9a441;
+  outline-offset: 0.12em;
+}
+
+.Mlabalaba-point.selected {
+  background: #d9a441;
+  color: #fffaf0;
+}
+
+.Mlabalaba-point:hover:not(:disabled) {
+  background: #fff1c7;
+}
+
+.Mlabalaba-point:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.Mlabalaba-controls {
+  margin-top: 0.2em;
+}

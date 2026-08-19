@@ -1,7 +1,6 @@
 import {
   GameState,
   Player,
-  SmallBoard,
   makeMove,
   getLegalMoves,
   getGameWinner,

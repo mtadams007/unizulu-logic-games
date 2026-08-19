@@ -4,7 +4,6 @@ import {
   Player,
   emptyGameState,
   makeMove,
-  getLegalMoves,
   getGameWinner,
   isDraw,
   otherPlayer,
